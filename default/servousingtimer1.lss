@@ -1,0 +1,271 @@
+
+servousingtimer1.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000130  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .debug_aranges 00000020  00000000  00000000  00000184  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  2 .debug_pubnames 00000057  00000000  00000000  000001a4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   0000016b  00000000  00000000  000001fb  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 000000c3  00000000  00000000  00000366  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   000002aa  00000000  00000000  00000429  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000070  00000000  00000000  000006d4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    000000ee  00000000  00000000  00000744  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_loc    00000030  00000000  00000000  00000832  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_ranges 00000048  00000000  00000000  00000862  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 60 00 	call	0xc0	; 0xc0 <main>
+  64:	0c 94 96 00 	jmp	0x12c	; 0x12c <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <T0Delay>:
+ }
+ }
+ void T0Delay()//for 1500 micro second
+ {
+  
+  TCNT1H=(-15957)>>8;//0xC1;
+  6c:	81 ec       	ldi	r24, 0xC1	; 193
+  6e:	8d bd       	out	0x2d, r24	; 45
+  TCNT1L=(-15957);//0xAB;
+  70:	8b ea       	ldi	r24, 0xAB	; 171
+  72:	8c bd       	out	0x2c, r24	; 44
+  TCCR1A=0x00;
+  74:	1f bc       	out	0x2f, r1	; 47
+  TCCR1B=0x01;
+  76:	81 e0       	ldi	r24, 0x01	; 1
+  78:	8e bd       	out	0x2e, r24	; 46
+   while((TIFR&(0x1<<TOV1))==0);
+  7a:	08 b6       	in	r0, 0x38	; 56
+  7c:	02 fe       	sbrs	r0, 2
+  7e:	fd cf       	rjmp	.-6      	; 0x7a <T0Delay+0xe>
+   TCCR1B=0;
+  80:	1e bc       	out	0x2e, r1	; 46
+   TIFR=0x1<<TOV1;
+  82:	84 e0       	ldi	r24, 0x04	; 4
+  84:	88 bf       	out	0x38, r24	; 56
+  
+   }
+  86:	08 95       	ret
+
+00000088 <T1Delay>:
+void T1Delay()
+ {
+  TCNT1H=(-85)>>8;
+  88:	8f ef       	ldi	r24, 0xFF	; 255
+  8a:	8d bd       	out	0x2d, r24	; 45
+  TCNT1L=(-85);
+  8c:	8b ea       	ldi	r24, 0xAB	; 171
+  8e:	8c bd       	out	0x2c, r24	; 44
+  TCCR1A=0x00;
+  90:	1f bc       	out	0x2f, r1	; 47
+  TCCR1B=0x01;
+  92:	81 e0       	ldi	r24, 0x01	; 1
+  94:	8e bd       	out	0x2e, r24	; 46
+   while((TIFR&(0x1<<TOV1))==0);
+  96:	08 b6       	in	r0, 0x38	; 56
+  98:	02 fe       	sbrs	r0, 2
+  9a:	fd cf       	rjmp	.-6      	; 0x96 <T1Delay+0xe>
+   TCCR1B=0;
+  9c:	1e bc       	out	0x2e, r1	; 46
+   TIFR=0x1<<TOV1;
+  9e:	84 e0       	ldi	r24, 0x04	; 4
+  a0:	88 bf       	out	0x38, r24	; 56
+   }
+  a2:	08 95       	ret
+
+000000a4 <T2Delay>:
+void T2Delay()
+ {
+  TCNT1H=(-23404)>>8;//0xB1;
+  a4:	84 ea       	ldi	r24, 0xA4	; 164
+  a6:	8d bd       	out	0x2d, r24	; 45
+  TCNT1L=(-23404);
+  a8:	84 e9       	ldi	r24, 0x94	; 148
+  aa:	8c bd       	out	0x2c, r24	; 44
+  TCCR1A=0x00;
+  ac:	1f bc       	out	0x2f, r1	; 47
+  TCCR1B=0x01;
+  ae:	81 e0       	ldi	r24, 0x01	; 1
+  b0:	8e bd       	out	0x2e, r24	; 46
+   while((TIFR&(0x1<<TOV1))==0);
+  b2:	08 b6       	in	r0, 0x38	; 56
+  b4:	02 fe       	sbrs	r0, 2
+  b6:	fd cf       	rjmp	.-6      	; 0xb2 <T2Delay+0xe>
+   TCCR1B=0;
+  b8:	1e bc       	out	0x2e, r1	; 46
+   TIFR=0x1<<TOV1;
+  ba:	84 e0       	ldi	r24, 0x04	; 4
+  bc:	88 bf       	out	0x38, r24	; 56
+   }
+  be:	08 95       	ret
+
+000000c0 <main>:
+void T1Delay();
+void T2Delay();
+
+
+void main()
+{
+  c0:	1f 93       	push	r17
+  c2:	cf 93       	push	r28
+  c4:	df 93       	push	r29
+ 
+ 
+ DDRB = 0xFF;
+  c6:	8f ef       	ldi	r24, 0xFF	; 255
+  c8:	87 bb       	out	0x17, r24	; 23
+ PORTB=PORTB^(1<<PB4);
+  ca:	88 b3       	in	r24, 0x18	; 24
+  cc:	90 e1       	ldi	r25, 0x10	; 16
+  ce:	89 27       	eor	r24, r25
+  d0:	88 bb       	out	0x18, r24	; 24
+ T0Delay();
+  d2:	0e 94 36 00 	call	0x6c	; 0x6c <T0Delay>
+ {
+
+ 
+
+ 
+ PORTB=PORTB^(1<<PB4);
+  d6:	10 e1       	ldi	r17, 0x10	; 16
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+  d8:	c4 e1       	ldi	r28, 0x14	; 20
+  da:	d1 e0       	ldi	r29, 0x01	; 1
+  dc:	88 b3       	in	r24, 0x18	; 24
+  de:	81 27       	eor	r24, r17
+  e0:	88 bb       	out	0x18, r24	; 24
+ T1Delay();
+  e2:	0e 94 44 00 	call	0x88	; 0x88 <T1Delay>
+  e6:	80 ed       	ldi	r24, 0xD0	; 208
+  e8:	97 e0       	ldi	r25, 0x07	; 7
+  ea:	fe 01       	movw	r30, r28
+  ec:	31 97       	sbiw	r30, 0x01	; 1
+  ee:	f1 f7       	brne	.-4      	; 0xec <main+0x2c>
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+  f0:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+  f2:	d9 f7       	brne	.-10     	; 0xea <main+0x2a>
+ 
+
+ _delay_ms(200);
+
+ PORTB=PORTB^(1<<PB4);
+  f4:	88 b3       	in	r24, 0x18	; 24
+  f6:	81 27       	eor	r24, r17
+  f8:	88 bb       	out	0x18, r24	; 24
+ T2Delay();
+  fa:	0e 94 52 00 	call	0xa4	; 0xa4 <T2Delay>
+  fe:	ee cf       	rjmp	.-36     	; 0xdc <main+0x1c>
+
+00000100 <T3Delay>:
+   TCCR1B=0;
+   TIFR=0x1<<TOV1;
+   }
+   void T3Delay()//FOR 8 MICRO SECOND
+ {
+ TCNT0=-88;
+ 100:	88 ea       	ldi	r24, 0xA8	; 168
+ 102:	82 bf       	out	0x32, r24	; 50
+  TCCR0=0x01;
+ 104:	81 e0       	ldi	r24, 0x01	; 1
+ 106:	83 bf       	out	0x33, r24	; 51
+  while((TIFR&0x1)==0);
+ 108:	08 b6       	in	r0, 0x38	; 56
+ 10a:	00 fe       	sbrs	r0, 0
+ 10c:	fd cf       	rjmp	.-6      	; 0x108 <T3Delay+0x8>
+   TCCR0=0;
+ 10e:	13 be       	out	0x33, r1	; 51
+   TIFR=0x1;
+ 110:	81 e0       	ldi	r24, 0x01	; 1
+ 112:	88 bf       	out	0x38, r24	; 56
+   
+ 
+   }
+ 114:	08 95       	ret
+
+00000116 <T4Delay>:
+void T4Delay()//FOR 1900 MICRO SECOND
+ {
+  TCNT0=-65;
+ 116:	8f eb       	ldi	r24, 0xBF	; 191
+ 118:	82 bf       	out	0x32, r24	; 50
+  TCCR0=0x04;
+ 11a:	84 e0       	ldi	r24, 0x04	; 4
+ 11c:	83 bf       	out	0x33, r24	; 51
+  while((TIFR&0x1)==0);
+ 11e:	08 b6       	in	r0, 0x38	; 56
+ 120:	00 fe       	sbrs	r0, 0
+ 122:	fd cf       	rjmp	.-6      	; 0x11e <T4Delay+0x8>
+   TCCR0=0;
+ 124:	13 be       	out	0x33, r1	; 51
+   TIFR=0x1;
+ 126:	81 e0       	ldi	r24, 0x01	; 1
+ 128:	88 bf       	out	0x38, r24	; 56
+   }
+ 12a:	08 95       	ret
+
+0000012c <_exit>:
+ 12c:	f8 94       	cli
+
+0000012e <__stop_program>:
+ 12e:	ff cf       	rjmp	.-2      	; 0x12e <__stop_program>
